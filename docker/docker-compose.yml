@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  mariadb:
+    image: mariadb
+    container_name: mariadb-biblioweb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: biblioweb
+      MYSQL_USER: admin123
+      MYSQL_PASSWORD: admin123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
