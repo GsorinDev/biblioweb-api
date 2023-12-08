@@ -4,6 +4,6 @@ import { TypeOfResourceController } from './type-of-resource.controller';
 
 @Module({
   controllers: [TypeOfResourceController],
-  providers: [TypeOfResourceService]
+  providers: [TypeOfResourceService],
 })
 export class TypeOfResourceModule {}

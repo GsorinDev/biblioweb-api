@@ -1,1 +1,14 @@
-export class Role {}
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../../user/entities/user.entity';
+
+@Entity()
+export class Role {
+  @PrimaryGeneratedColumn()
+  id: string;
+
+  @Column()
+  name: string;
+
+  @OneToMany(() => User, (user) => user.role)
+  users: User[];
+}
