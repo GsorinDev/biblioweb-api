@@ -39,7 +39,7 @@ import * as process from "process";
     TypeOrmModule.forRoot({
       type: 'mariadb',
       host: process.env.URL ? process.env.URL : 'localhost',
-      port: 3307,
+      port: process.env.PORT ? process.env.PORT : 3307,
       username: process.env.USERNAME ? process.env.USERNAME : 'admin123',
       password: process.env.PASSWORD ? process.env.PASSWORD : 'admin123',
       database: 'biblioweb',
