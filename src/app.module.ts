@@ -22,6 +22,7 @@ import { Right } from './right/entities/right.entity';
 import { Subscription } from './subscription/entities/subscription.entity';
 import { Role } from './role/entities/role.entity';
 import { Loan } from './loan/entities/loan.entity';
+import * as process from "process";
 
 @Module({
   imports: [
@@ -39,8 +40,8 @@ import { Loan } from './loan/entities/loan.entity';
       type: 'mariadb',
       host: 'localhost',
       port: 3307,
-      username: 'admin123',
-      password: 'admin123',
+      username: process.env.USERNAME ? process.env.USERNAME : 'admin123',
+      password: process.env.PASSWORD ? process.env.PASSWORD : 'admin123',
       database: 'biblioweb',
       entities: [],
       synchronize: true,
