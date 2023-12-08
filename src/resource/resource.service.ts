@@ -1,4 +1,4 @@
-import { Injectable, Res } from '@nestjs/common';
+import { BadRequestException, Injectable, Res } from "@nestjs/common";
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,8 +26,10 @@ export class ResourceService {
         where: { id: createResourceDto.typeOfResource },
       });
 
-    if (!typeOfResource) {
-      throw new Error("typeOfResource doesn't exist");
+    console.log(typeOfResource);
+
+    if (!typeOfResource || createResourceDto.typeOfResource === null) {
+      throw new BadRequestException("typeOfResource doesn't exist");
     }
 
     const authors: Author[] = await this.authorRepository.find({
@@ -35,7 +37,7 @@ export class ResourceService {
     });
 
     if (!authors) {
-      throw new Error("authors doesn't exist");
+      throw new BadRequestException("authors doesn't exist");
     }
 
     const genres: Genre[] = await this.genreRepository.find({
@@ -43,7 +45,7 @@ export class ResourceService {
     });
 
     if (!genres) {
-      throw new Error("genres doesn't exist");
+      throw new BadRequestException("genres doesn't exist");
     }
 
     const resource = new Resource();
@@ -60,7 +62,9 @@ export class ResourceService {
   }
 
   findAll() {
-    return this.resourceRepository.find({ relations: ['typeOfResource', 'authors', 'genres'] });
+    return this.resourceRepository.find({
+      relations: ['typeOfResource', 'authors', 'genres'],
+    });
   }
 
   findOne(id: number) {
