@@ -23,7 +23,6 @@ import { Subscription } from './subscription/entities/subscription.entity';
 import { Role } from './role/entities/role.entity';
 import { Loan } from './loan/entities/loan.entity';
 import * as process from "process";
-
 @Module({
   imports: [
     UserModule,
@@ -38,10 +37,10 @@ import * as process from "process";
     LoanModule,
     TypeOrmModule.forRoot({
       type: 'mariadb',
-      host: process.env.URL ? process.env.URL : 'localhost',
-      port: Number(process.env.PORT ? process.env.PORT : 3307),
-      username: process.env.USERNAME ? process.env.USERNAME : 'admin123',
-      password: process.env.PASSWORD ? process.env.PASSWORD : 'admin123',
+      host: process.env.URL,
+      port: Number(process.env.PORT),
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD,
       database: 'biblioweb',
       entities: [],
       synchronize: true,
