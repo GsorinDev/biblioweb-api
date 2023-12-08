@@ -38,7 +38,7 @@ import * as process from "process";
     LoanModule,
     TypeOrmModule.forRoot({
       type: 'mariadb',
-      host: 'localhost',
+      host: process.env.URL ? process.env.URL : 'localhost',
       port: 3307,
       username: process.env.USERNAME ? process.env.USERNAME : 'admin123',
       password: process.env.PASSWORD ? process.env.PASSWORD : 'admin123',
