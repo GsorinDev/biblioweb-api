@@ -37,7 +37,7 @@ import * as process from "process";
     RoleModule,
     LoanModule,
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'mariadb',
       host: process.env.URL ? process.env.URL : 'localhost',
       port: Number(process.env.PORT ? process.env.PORT : 3307),
       username: process.env.USERNAME ? process.env.USERNAME : 'admin123',
