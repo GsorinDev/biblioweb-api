@@ -1,11 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTypeOfResourceDto } from './dto/create-type-of-resource.dto';
 import { UpdateTypeOfResourceDto } from './dto/update-type-of-resource.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { TypeOfResource } from './entities/type-of-resource.entity';
 
 @Injectable()
 export class TypeOfResourceService {
+  constructor(
+    @InjectRepository(TypeOfResource)
+    private readonly typeOfResourceRepository: Repository<TypeOfResource>,
+  ) {}
   create(createTypeOfResourceDto: CreateTypeOfResourceDto) {
-    return 'This action adds a new typeOfResource';
+    const typeOfResource = new TypeOfResource();
+    typeOfResource.name = createTypeOfResourceDto.name;
+
+    return this.typeOfResourceRepository.save(typeOfResource);
   }
 
   findAll() {

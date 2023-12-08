@@ -28,6 +28,9 @@ export class Resource {
   @Column()
   available: boolean;
 
+  @Column()
+  description: string;
+
   @ManyToMany(() => Genre, { onDelete: 'CASCADE' })
   @JoinTable({ name: 'pivot_resources_genres' })
   genres: Genre[];

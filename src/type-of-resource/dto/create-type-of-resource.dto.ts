@@ -1,1 +1,3 @@
-export class CreateTypeOfResourceDto {}
+export class CreateTypeOfResourceDto {
+  readonly name: string;
+}

@@ -1,15 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import { CreateResourceDto } from './dto/create-resource.dto';
 import { UpdateResourceDto } from './dto/update-resource.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TypeOfResource } from '../type-of-resource/entities/type-of-resource.entity';
+import { In, Repository } from 'typeorm';
+import { Genre } from '../genre/entities/genre.entity';
+import { Author } from '../author/entities/author.entity';
+import { Resource } from './entities/resource.entity';
 
 @Injectable()
 export class ResourceService {
-  create(createResourceDto: CreateResourceDto) {
-    return 'This action adds a new resource';
+  constructor(
+    @InjectRepository(TypeOfResource)
+    private readonly typeOfResourceRepository: Repository<TypeOfResource>,
+    @InjectRepository(Genre)
+    private readonly genreRepository: Repository<Genre>,
+    @InjectRepository(Author)
+    private readonly authorRepository: Repository<Author>,
+    @InjectRepository(Resource)
+    private readonly resourceRepository: Repository<Resource>,
+  ) {}
+  async create(createResourceDto: CreateResourceDto) {
+    const typeOfResource: TypeOfResource =
+      await this.typeOfResourceRepository.findOne({
+        where: { id: createResourceDto.typeOfResource },
+      });
+
+    if (!typeOfResource) {
+      throw new Error("typeOfResource doesn't exist");
+    }
+
+    const authors: Author[] = await this.authorRepository.find({
+      where: { id: In(createResourceDto.authors) },
+    });
+
+    if (!authors) {
+      throw new Error("authors doesn't exist");
+    }
+
+    const genres: Genre[] = await this.genreRepository.find({
+      where: { id: In(createResourceDto.genres) },
+    });
+
+    if (!genres) {
+      throw new Error("genres doesn't exist");
+    }
+
+    const resource = new Resource();
+
+    resource.authors = authors;
+    resource.description = createResourceDto.description;
+    resource.genres = genres;
+    resource.typeOfResource = typeOfResource;
+    resource.quantity = createResourceDto.quantity;
+    resource.available = createResourceDto.available;
+    resource.title = createResourceDto.title;
+
+    return this.resourceRepository.save(resource);
   }
 
   findAll() {
-    return `This action returns all resource`;
+    return this.resourceRepository.find({ relations: ['typeOfResource', 'authors', 'genres'] });
   }
 
   findOne(id: number) {

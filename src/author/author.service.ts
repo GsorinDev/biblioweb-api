@@ -1,11 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Author } from './entities/author.entity';
 
 @Injectable()
 export class AuthorService {
+  constructor(
+    @InjectRepository(Author)
+    private readonly authorRepository: Repository<Author>,
+  ) {}
   create(createAuthorDto: CreateAuthorDto) {
-    return 'This action adds a new author';
+    const author = new Author();
+    author.name = createAuthorDto.name;
+    author.biography = createAuthorDto.biography;
+
+    return this.authorRepository.save(author);
   }
 
   findAll() {
